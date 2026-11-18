@@ -17,7 +17,7 @@ html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;min-height:100%;display:grid;place-items:center;overflow-x:hidden;color:var(--ink);background:radial-gradient(circle at 12% 18%,var(--bg2),transparent 45%),radial-gradient(circle at 88% 82%,var(--bg2),transparent 45%),var(--bg);font-family:"Fredoka",ui-rounded,"Trebuchet MS",system-ui,sans-serif}
 [hidden]{display:none!important}
 .deco{position:fixed;inset:0;pointer-events:none;overflow:hidden}
-.deco span{position:absolute;font-size:clamp(24px,5vw,40px);opacity:.5;animation:drift 9s ease-in-out infinite}
+.deco span{position:absolute;font-size:clamp(24px,5vw,40px);opacity:.5}
 main{position:relative;z-index:1;width:min(92vw,620px);margin:24px auto;padding:clamp(18px,4vw,34px);text-align:center;background:var(--card);border:3px solid var(--ink);border-radius:32px;box-shadow:0 8px 0 var(--ink)}
 .mascot{width:clamp(140px,38vw,190px);height:auto;animation:bob 3.2s ease-in-out infinite}
 .mm,.tear{opacity:0;transition:opacity .2s}
@@ -48,7 +48,6 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
 .go #again{animation:fade .7s 3.2s forwards}
 .h{position:absolute;left:var(--x);top:150px;color:var(--pink);font-size:22px;pointer-events:none;animation:up 1.7s ease-out forwards}
 @keyframes bob{50%{transform:translateY(-6px)}}
-@keyframes drift{50%{transform:translateY(-18px) rotate(8deg)}}
 @keyframes wob{0%{transform:scale(.6)}40%{transform:scale(1.12) rotate(-2deg)}70%{transform:scale(.97) rotate(1deg)}100%{transform:scale(1)}}
 @keyframes fade{to{opacity:1}}
 @keyframes up{from{opacity:1}to{opacity:0;transform:translateY(-150px) rotate(var(--rot))}}
@@ -56,7 +55,7 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
 </style>
 </head>
 <body>
-<div class="deco" aria-hidden="true"><span style="left:6%;top:12%">🧸</span><span style="left:84%;top:16%;animation-delay:-3s">☕</span><span style="left:10%;top:74%;animation-delay:-5s">🧦</span><span style="left:86%;top:70%;animation-delay:-2s">🍪</span><span style="left:46%;top:4%;animation-delay:-6s">✨</span><span style="left:50%;top:90%;animation-delay:-4s">🕯️</span></div>
+<div class="deco" aria-hidden="true"><span style="left:6%;top:12%">🧸</span><span style="left:84%;top:16%">☕</span><span style="left:10%;top:74%">🧦</span><span style="left:86%;top:70%">🍪</span><span style="left:46%;top:4%">✨</span><span style="left:50%;top:90%">🕯️</span></div>
 <main id="main">
 <svg id="face" class="mascot" data-mood="idle" viewBox="0 0 200 180" role="img" aria-label="A round, fluffy little character with rosy cheeks">
 <ellipse cx="100" cy="170" rx="56" ry="8" fill="#4b2e2b" opacity=".12"/>
