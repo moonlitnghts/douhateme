@@ -25,8 +25,6 @@ html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:inherit}
 body{margin:0;min-height:100%;display:grid;place-items:center;overflow-x:hidden;color:var(--ink);background:radial-gradient(circle at 12% 18%,var(--bg2),transparent 45%),radial-gradient(circle at 88% 82%,var(--bg2),transparent 45%),var(--bg);font-family:"Fredoka",ui-rounded,"Trebuchet MS",system-ui,sans-serif}
 [hidden]{display:none!important}
-.deco{position:fixed;inset:0;pointer-events:none;overflow:hidden}
-.deco span{position:absolute;font-size:clamp(24px,5vw,40px);opacity:.5}
 main{position:relative;z-index:1;width:min(92vw,620px);margin:24px auto;padding:clamp(18px,4vw,34px);text-align:center;background:var(--card);border:3px solid var(--ink);border-radius:32px;box-shadow:0 8px 0 var(--ink)}
 .mascot{width:clamp(140px,38vw,190px);height:auto;animation:bob 3.2s ease-in-out infinite}
 .mm,.tear{opacity:0;transition:opacity .2s}
@@ -51,10 +49,19 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
 .wow{margin:8px 0 0;font-size:clamp(40px,12vw,68px);letter-spacing:.02em;animation:wob 1.4s ease-in-out}
 .knew{margin:6px 0 10px;font-size:clamp(28px,8vw,44px);font-weight:600;opacity:0;text-decoration:underline wavy var(--pink);text-underline-offset:8px}
 .detail{margin:0 0 18px;color:var(--soft);opacity:0}
-#again,#share{opacity:0}
+#again{opacity:0}
 .go .knew{animation:fade .7s 1.6s forwards}
 .go .detail{animation:fade .7s 2.6s forwards}
-.go #again,.go #share{animation:fade .7s 3.2s forwards}
+.go #again{animation:fade .7s 3.2s forwards}
+.no.ready{animation:glow 1s ease-in-out infinite}
+.modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px;background:#2a1a1ecc}
+.modal .card{width:min(92vw,440px);padding:26px 26px 30px;text-align:center;background:var(--card);border:3px solid var(--ink);border-radius:28px;box-shadow:0 8px 0 var(--ink);animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+.modal h2{margin:6px 0 8px;font-size:clamp(28px,8vw,38px)}
+.modal p{margin:0 0 10px}
+.stamp{display:inline-block;padding:4px 14px;border:2px dashed var(--pink);border-radius:999px;color:var(--soft);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.big{margin:16px 0 20px!important;font-size:26px;font-weight:700;transform:rotate(-2deg);text-decoration:underline wavy var(--pink);text-underline-offset:6px}
+@keyframes glow{50%{box-shadow:0 4px 0 var(--ink),0 0 0 9px #ffd27d99}}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
 .h{position:absolute;left:var(--x);top:150px;color:var(--pink);font-size:22px;pointer-events:none;animation:up 1.7s ease-out forwards}
 @keyframes bob{50%{transform:translateY(-6px)}}
 @keyframes wob{0%{transform:scale(.6)}40%{transform:scale(1.12) rotate(-2deg)}70%{transform:scale(.97) rotate(1deg)}100%{transform:scale(1)}}
@@ -64,7 +71,6 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
 </style>
 </head>
 <body>
-<div class="deco" aria-hidden="true"><span style="left:6%;top:12%">🧸</span><span style="left:84%;top:16%">☕</span><span style="left:10%;top:74%">🧦</span><span style="left:86%;top:70%">🍪</span><span style="left:46%;top:4%">✨</span><span style="left:50%;top:90%">🕯️</span></div>
 <main id="main">
 <svg id="face" class="mascot" data-mood="idle" viewBox="0 0 200 180" role="img" aria-label="A round, fluffy little character with rosy cheeks">
 <ellipse cx="100" cy="170" rx="56" ry="8" fill="#4b2e2b" opacity=".12"/>
@@ -98,9 +104,19 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
 <h2 class="wow" id="wow"></h2>
 <p class="knew" id="knew"></p>
 <p class="detail" id="detail"></p>
-<div class="opts"><button class="opt again" id="share">send this to someone</button><button class="opt again" id="again">wait, i misclicked</button></div>
+<div class="opts"><button class="opt again" id="again">wait, i misclicked</button></div>
 </section>
 </main>
+<div class="modal" id="cert" role="dialog" aria-modal="true" aria-labelledby="certTitle" hidden>
+<div class="card">
+<p aria-hidden="true" style="font-size:34px">🎉🧸🎉</p>
+<p class="stamp">official certificate</p>
+<h2 id="certTitle">you pressed no.</h2>
+<p>it took a lot of chasing and one very tired button. so i believe you. (a little.)</p>
+<p class="big">certified non-hater</p>
+<button class="opt again" id="certBtn">aww. ok. hug?</button>
+</div>
+</div>
 
 <script>
 (() => {
@@ -132,6 +148,8 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
     "Sometimes": ["“sometimes.” the most honest answer. still ouch."]
   };
   const labels = ["No", "nope", "n-", "nah", "no?", "…", "no."];
+  const GOAL = 100;
+  let unlocked = false;
   let fled = false, tries = 0, last = 0, rounds = 0, kb = 0, faking = false;
 
   const mood = (m) => { face.dataset.mood = m; };
@@ -146,6 +164,7 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
   }
 
   function flee(px, py) {
+    if (unlocked) return;
     const t = performance.now();
     if (t - last < 120) return;
     last = t;
@@ -180,6 +199,14 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
     meta.hidden = false;
     say.textContent = tries <= quips.length ? quips[tries - 1] : quips[Math.floor(Math.random() * quips.length)];
     mood("worried");
+    if (tries >= GOAL) {
+      unlocked = true;
+      no.textContent = "No";
+      no.style.setProperty("--s", "1.1");
+      no.classList.add("ready");
+      say.textContent = "okay. okay. you earned it. press it.";
+      mood("happy");
+    }
   }
 
   function show(wowText, knewText, detailText, m) {
@@ -209,6 +236,27 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
     }
   }
 
+  function finale() {
+    no.hidden = true;
+    mood("happy");
+    say.textContent = "(crying, but the good kind)";
+    $("cert").hidden = false;
+    $("certBtn").focus();
+  }
+
+  function closeCert() {
+    if ($("cert").hidden) return;
+    $("cert").hidden = true;
+    tries = 0;
+    unlocked = false;
+    no.classList.remove("ready");
+    count.textContent = 0;
+    meta.hidden = true;
+    $("again").click();
+  }
+  $("certBtn").addEventListener("click", closeCert);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCert(); });
+
   opts.forEach((b) => b.addEventListener("click", () => {
     const label = b.textContent.trim();
     const pool = [details[label]].concat(alts[label] || []);
@@ -218,6 +266,7 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
   }));
 
   no.addEventListener("click", (e) => {
+    if (unlocked) { finale(); return; }
     if (e.detail > 0) { e.preventDefault(); flee(e.clientX, e.clientY); return; }
     if (++kb < 3) { flee(innerWidth / 2, innerHeight / 2); say.textContent = "nice try, keyboard warrior"; return; }
     show("…no?", "huh. okay.", "wait, you actually got it?? how. i didn’t think anyone could. (i believe you. a little.)", "happy");
@@ -232,14 +281,6 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
       say.textContent = hope ? "wait… is that a little?" : "oh no. here it comes.";
     });
     b.addEventListener("pointerleave", () => { if (result.hidden) mood(tries ? "worried" : "idle"); });
-  });
-
-  $("share").addEventListener("click", async () => {
-    const data = { title: "do you hate me?", text: "be honest. i can take it. (i can’t.)", url: location.href };
-    try {
-      if (navigator.share) await navigator.share(data);
-      else { await navigator.clipboard.writeText(location.href); say.textContent = "link copied! go bother someone."; }
-    } catch (err) { /* share cancelled */ }
   });
 
   $("again").addEventListener("click", () => {
