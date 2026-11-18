@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#fff3e3">
+<meta name="description" content="be honest. i can take it. (i can’t.)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="do you hate me?">
+<meta property="og:description" content="be honest. i can take it. (i can’t.)">
+<meta property="og:image" content="https://moonlitnghts.github.io/do-you-hate-me/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://moonlitnghts.github.io/do-you-hate-me/og-image.png">
 <title>do you hate me?</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,7 +36,7 @@ main{position:relative;z-index:1;width:min(92vw,620px);margin:24px auto;padding:
 h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
 .sub{margin:0 0 22px;color:var(--soft)}
 .opts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
-.opt{font:inherit;font-weight:600;font-size:clamp(17px,4.6vw,20px);padding:11px 22px;color:var(--ink);background:var(--yes);border:2px solid var(--ink);border-radius:999px;box-shadow:0 4px 0 var(--ink);cursor:pointer;touch-action:manipulation;user-select:none;-webkit-tap-highlight-color:transparent;transform:rotate(var(--r,0deg));transition:transform .12s,box-shadow .12s,background .2s}
+.opt{font:inherit;font-weight:600;font-size:clamp(17px,4.6vw,20px);padding:11px 22px;color:var(--ink);background:var(--yes);border:2px solid var(--ink);border-radius:999px;box-shadow:0 4px 0 var(--ink);cursor:pointer;touch-action:manipulation;user-select:none;-webkit-tap-highlight-color:transparent;transform:rotate(var(--r,0deg)) scale(var(--s,1));transition:transform .12s,box-shadow .12s,background .2s}
 .opts>.opt:nth-child(odd){--r:-1.6deg}
 .opts>.opt:nth-child(even){--r:1.3deg}
 .opt:hover{background:var(--yesh);transform:translateY(-3px) rotate(calc(var(--r,0deg) * -1))}
@@ -36,16 +45,16 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
 .no{--r:0deg;background:var(--pink);color:#4b2e2b}
 .no:hover{background:var(--pink)}
 .no.fled{position:fixed;z-index:20;margin:0;transition:left .3s cubic-bezier(.34,1.56,.64,1),top .3s cubic-bezier(.34,1.56,.64,1),transform .3s}
-.no.fled:hover{transform:rotate(var(--r,0deg))}
+.no.fled:hover{transform:rotate(var(--r,0deg)) scale(var(--s,1))}
 .slot{display:inline-block}
 .meta{margin:20px 0 0;font-size:14px;color:var(--soft)}
 .wow{margin:8px 0 0;font-size:clamp(40px,12vw,68px);letter-spacing:.02em;animation:wob 1.4s ease-in-out}
 .knew{margin:6px 0 10px;font-size:clamp(28px,8vw,44px);font-weight:600;opacity:0;text-decoration:underline wavy var(--pink);text-underline-offset:8px}
 .detail{margin:0 0 18px;color:var(--soft);opacity:0}
-#again{opacity:0}
+#again,#share{opacity:0}
 .go .knew{animation:fade .7s 1.6s forwards}
 .go .detail{animation:fade .7s 2.6s forwards}
-.go #again{animation:fade .7s 3.2s forwards}
+.go #again,.go #share{animation:fade .7s 3.2s forwards}
 .h{position:absolute;left:var(--x);top:150px;color:var(--pink);font-size:22px;pointer-events:none;animation:up 1.7s ease-out forwards}
 @keyframes bob{50%{transform:translateY(-6px)}}
 @keyframes wob{0%{transform:scale(.6)}40%{transform:scale(1.12) rotate(-2deg)}70%{transform:scale(.97) rotate(1deg)}100%{transform:scale(1)}}
@@ -89,7 +98,7 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
 <h2 class="wow" id="wow"></h2>
 <p class="knew" id="knew"></p>
 <p class="detail" id="detail"></p>
-<button class="opt again" id="again">wait, i misclicked</button>
+<div class="opts"><button class="opt again" id="share">send this to someone</button><button class="opt again" id="again">wait, i misclicked</button></div>
 </section>
 </main>
 
@@ -112,7 +121,18 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
     "Sometimes": "“sometimes.” honestly? fair. i hate me on tuesdays."
   };
   const quips = ["oh, it moved. weird.", "hehe. it’s shy.", "you almost had it!", "it doesn’t want to be picked.", "the no button has left the chat", "careful, it bites. (it doesn’t.)", "nope. not today.", "it’s doing its little dance", "wow, so determined", "it’s faster than it looks", "okay now you’re just bullying it", "this is the cardio portion", "respect the hustle. still no."];
-  let fled = false, tries = 0, last = 0;
+  const alts = {
+    "Yes": ["a “yes.” just one syllable of pure honesty."],
+    "Definitely": ["“definitely.” you said it like a weather report."],
+    "Absolutely": ["“absolutely.” not even a “well, maybe.” wow."],
+    "For sure": ["“for sure.” at least you’re confident about it."],
+    "A little": ["“a little.” i’ll take it. i’ll take a little."],
+    "Obviously": ["“obviously.” and i thought we were having a nice time."],
+    "Big time": ["“big time.” the bear is now emotionally damp."],
+    "Sometimes": ["“sometimes.” the most honest answer. still ouch."]
+  };
+  const labels = ["No", "nope", "n-", "nah", "no?", "…", "no."];
+  let fled = false, tries = 0, last = 0, rounds = 0, kb = 0, faking = false;
 
   const mood = (m) => { face.dataset.mood = m; };
   const nearest = (x, y, r) => Math.hypot(Math.max(r.left - x, 0, x - r.right), Math.max(r.top - y, 0, y - r.bottom));
@@ -154,6 +174,8 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
     no.style.top = best[1] + "px";
     no.style.setProperty("--r", (Math.random() * 24 - 12).toFixed(1) + "deg");
     tries++;
+    no.textContent = labels[Math.min(tries, labels.length - 1)];
+    no.style.setProperty("--s", Math.max(0.6, 1 - tries * 0.04).toFixed(2));
     count.textContent = tries;
     meta.hidden = false;
     say.textContent = tries <= quips.length ? quips[tries - 1] : quips[Math.floor(Math.random() * quips.length)];
@@ -189,13 +211,35 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
 
   opts.forEach((b) => b.addEventListener("click", () => {
     const label = b.textContent.trim();
-    show("wowwww…", "i knew it.", details[label] || "", "sad");
+    const pool = [details[label]].concat(alts[label] || []);
+    rounds++;
+    const knew = rounds < 3 ? "i knew it." : ["you keep coming back for this, huh.", "round " + rounds + ". still knew it.", "i knew it. i always know."][rounds % 3];
+    show("wowwww…", knew, pool[Math.floor(Math.random() * pool.length)], "sad");
   }));
 
   no.addEventListener("click", (e) => {
     if (e.detail > 0) { e.preventDefault(); flee(e.clientX, e.clientY); return; }
+    if (++kb < 3) { flee(innerWidth / 2, innerHeight / 2); say.textContent = "nice try, keyboard warrior"; return; }
     show("…no?", "huh. okay.", "wait, you actually got it?? how. i didn’t think anyone could. (i believe you. a little.)", "happy");
     hearts();
+  });
+
+  opts.forEach((b) => {
+    const hope = b.textContent.trim() === "A little";
+    b.addEventListener("pointerenter", () => {
+      if (!result.hidden) return;
+      mood(hope ? "happy" : "worried");
+      say.textContent = hope ? "wait… is that a little?" : "oh no. here it comes.";
+    });
+    b.addEventListener("pointerleave", () => { if (result.hidden) mood(tries ? "worried" : "idle"); });
+  });
+
+  $("share").addEventListener("click", async () => {
+    const data = { title: "do you hate me?", text: "be honest. i can take it. (i can’t.)", url: location.href };
+    try {
+      if (navigator.share) await navigator.share(data);
+      else { await navigator.clipboard.writeText(location.href); say.textContent = "link copied! go bother someone."; }
+    } catch (err) { /* share cancelled */ }
   });
 
   $("again").addEventListener("click", () => {
@@ -206,6 +250,9 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
     no.style.left = no.style.top = "";
     holder.style.width = holder.style.height = "";
     fled = false;
+    kb = 0;
+    no.textContent = "No";
+    no.style.setProperty("--s", "1");
     mood("idle");
     say.textContent = "okay. again. be honest.";
   });
@@ -213,7 +260,13 @@ h1{margin:12px 0 4px;font-size:clamp(36px,10vw,56px);line-height:1.05}
   document.addEventListener("pointermove", (e) => {
     look(e.clientX, e.clientY);
     if (!result.hidden || no.hidden) return;
-    if (nearest(e.clientX, e.clientY, no.getBoundingClientRect()) < (e.pointerType === "mouse" ? 95 : 60)) flee(e.clientX, e.clientY);
+    if (nearest(e.clientX, e.clientY, no.getBoundingClientRect()) < (e.pointerType === "mouse" ? 95 : 60)) {
+      if (tries > 3 && !faking && Math.random() < 0.2) {
+        faking = true;
+        say.textContent = "…";
+        setTimeout(() => { faking = false; flee(e.clientX, e.clientY); }, 500);
+      } else if (!faking) flee(e.clientX, e.clientY);
+    }
   });
 
   document.addEventListener("pointerdown", (e) => {
